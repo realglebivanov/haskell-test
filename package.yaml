@@ -14,9 +14,16 @@ dependencies:
 - bytestring
 - aeson
 - scotty
+- persistent
+- persistent-postgresql
+- persistent-template
+- monad-logger
 
 library:
   source-dirs: [app, domain]
+
+default-extensions:
+  - OverloadedStrings
 
 executables:
   main:

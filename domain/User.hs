@@ -1,15 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE StandaloneDeriving #-}
 
-module User (User, new, name, email) where
+module User (User, new) where
 
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
+import Persistence.Schema (User(User))
 
-data User = User {
-  name :: String,
-  email :: String
-} deriving (Show, Eq, Generic)
-
+deriving instance Generic User
 instance FromJSON User
 instance ToJSON User
 

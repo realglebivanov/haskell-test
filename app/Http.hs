@@ -1,9 +1,10 @@
 module Http (start) where
 
-import Scotty
-import qualified Rpc ()
+import Web.Scotty
+import qualified Rpc (handle)
+import Control.Monad.IO.Class (liftIO)
 
 start :: IO ()
 start = scotty 3000 $ do
-  get "/rpc/:test" >>= param "test" >>= \p -> html join ["You have written:", p]
-
+  get "/rpc" $ do
+    body >>= \content -> (liftIO $ Rpc.handle content) >>= raw
