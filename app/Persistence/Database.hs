@@ -1,13 +1,18 @@
 {-# LANGUAGE GADTs #-}
 
-module Persistence.Database (exec) where
+module Persistence.Database (exec, insert, all) where
 
 import Database.Persist.Postgresql as P (ConnectionString, SqlPersistT, IsSqlBackend)
-import Database.Persist.Postgresql as P (withPostgresqlConn, insert)
-import Control.Monad.Reader (runReaderT)
-import Control.Monad.Logger (runStdoutLoggingT)
+import Database.Persist.Postgresql as P (withPostgresqlConn)
+import Database.Persist.Sql as Sql (insert, selectList)
+import Control.Monad.Reader (runReaderT, ReaderT, MonadIO)
+import Control.Monad.Logger (runStdoutLoggingT, MonadLogger)
+import Persistence.Schema (Entity)
 
-insert record = exec $ P.insert record
+all :: (MonadIO m, MonadLogger m) => SqlPersistT m [Entity r]
+all = exec $ Sql.selectList [] []
+
+insert record = exec $ Sql.insert record
 
 exec action = runStdoutLoggingT $ P.withPostgresqlConn connString runAction
   where

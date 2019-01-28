@@ -4,20 +4,16 @@ import Network.JsonRpc.Server
 import qualified Data.ByteString.Lazy.Char8 as B
 import Data.Maybe (fromMaybe)
 import Control.Monad.Trans (liftIO)
-import Control.Monad.Reader (ReaderT, ask, runReaderT)
-import Control.Concurrent.MVar (MVar, newMVar, modifyMVar)
 import qualified User
 import qualified Data.Aeson as Aeson
 import qualified Persistence.Database
-import qualified Persistence.Schema
 
-type Server = ReaderT (MVar Int) IO
+type Server = IO
 
 handle :: B.ByteString -> IO B.ByteString
-handle request = createMVar >>= runMethod >>= makeResponse
+handle request = runMethod >>= makeResponse
   where
-    createMVar = newMVar 0 :: IO (MVar Int)
-    runMethod = runReaderT (call methods request)
+    runMethod = call methods request
     makeResponse response = return $ fromMaybe defaultResponse response
     defaultResponse = "" :: B.ByteString
 
@@ -34,6 +30,8 @@ create = toMethod "create" f params
 index :: Method Server
 index = toMethod "index" f ()
   where
-    f :: RpcResult Server Int
-    f = Database.all :: [Schema.Entity User.User]
+    f :: RpcResult Server String
+    f = liftIO $ (Database.all :: [Schema.Entity User.User]) >>= encode
+      where
+        encode users = return $ Aeson.encode users
 

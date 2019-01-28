@@ -1,6 +1,10 @@
 version: '3.5'
 
 services:
+  test:
+    build: .
+    command: stack exec test
+    working_dir: /app
   app:
     dns: 8.8.8.8
     build: .

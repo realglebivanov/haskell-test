@@ -7,7 +7,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Persistence.Schema (User(User), migrateAll) where
+module Persistence.Schema (User(User), Entity, migrateAll) where
 
 import Database.Persist
 import Database.Persist.Postgresql
