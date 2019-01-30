@@ -1,15 +1,15 @@
-module Rpc (handle) where
+module HaskellTest.Rpc (handle) where
 
 import Network.JsonRpc.Server
 import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Data.Aeson as Aeson
-import qualified Persistence.Repository as Repository
-import qualified Domain.User as User (new)
-import Serializers.User (UserView, toView)
+import qualified HaskellTest.Persistence.Repository as Repository
+import qualified HaskellTest.Domain.User as User (new)
+import HaskellTest.Serializers.User (UserView, toView)
 
 import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromMaybe)
-import Persistence.Schema (Entity, User)
+import HaskellTest.Persistence.Schema (Entity, User)
 
 type Server = IO
 

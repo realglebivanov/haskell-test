@@ -1,7 +1,7 @@
-module Http (start) where
+module HaskellTest.Http (start) where
 
 import Web.Scotty
-import qualified Rpc (handle)
+import qualified HaskellTest.Rpc as Rpc (handle)
 import Control.Monad.IO.Class (liftIO)
 
 start :: IO ()

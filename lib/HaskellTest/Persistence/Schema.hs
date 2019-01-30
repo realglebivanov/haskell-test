@@ -1,4 +1,4 @@
-module Persistence.Schema (User(User), Entity(Entity), migrateAll) where
+module HaskellTest.Persistence.Schema (User(User), Entity(Entity), migrateAll) where
 
 import Database.Persist
 import Database.Persist.Postgresql

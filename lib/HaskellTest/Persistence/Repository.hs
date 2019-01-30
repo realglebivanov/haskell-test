@@ -1,4 +1,4 @@
-module Persistence.Repository (exec, list, insert) where
+module HaskellTest.Persistence.Repository (exec, list, insert) where
 
 import Database.Persist.Postgresql (ConnectionString, SqlPersistT, SqlBackend)
 import Database.Persist.Postgresql (withPostgresqlConn)
@@ -7,7 +7,7 @@ import Control.Monad.IO.Unlift (MonadUnliftIO)
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Logger (MonadLogger, LoggingT, runStdoutLoggingT)
 import Control.Monad.Reader (runReaderT)
-import Persistence.Schema (Entity)
+import HaskellTest.Persistence.Schema (Entity)
 
 list :: (MonadUnliftIO m, PersistEntity r, PersistEntityBackend r ~ SqlBackend) =>
   m [Entity r]

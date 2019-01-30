@@ -22,7 +22,7 @@ dependencies:
 - transformers
 
 library:
-  source-dirs: [app]
+  source-dirs: [lib]
 
 default-extensions:
   - OverloadedStrings
@@ -37,7 +37,7 @@ default-extensions:
 
 executables:
   main:
-    main: Main
+    main: HaskellTest.Main
     source-dirs: bin
     ghc-options:
     - -threaded
@@ -47,7 +47,7 @@ executables:
     - haskell-test
 
   migrations:
-    main: Migrations
+    main: HaskellTest.Migrations
     source-dirs: bin
     ghc-options:
     - -threaded

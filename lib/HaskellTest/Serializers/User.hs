@@ -1,7 +1,7 @@
-module Serializers.User (toView, UserView) where
+module HaskellTest.Serializers.User (toView, UserView) where
 
 import Data.Aeson
-import Persistence.Schema (User(User), Entity(Entity))
+import HaskellTest.Persistence.Schema (User(User), Entity(Entity))
 
 newtype UserView = UserView (Entity User)
 
