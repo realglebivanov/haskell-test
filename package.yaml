@@ -18,12 +18,22 @@ dependencies:
 - persistent-postgresql
 - persistent-template
 - monad-logger
+- unliftio-core
+- transformers
 
 library:
-  source-dirs: [app, domain]
+  source-dirs: [app]
 
 default-extensions:
   - OverloadedStrings
+  - EmptyDataDecls
+  - FlexibleContexts
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - MultiParamTypeClasses
+  - QuasiQuotes
+  - TemplateHaskell
+  - TypeFamilies
 
 executables:
   main:

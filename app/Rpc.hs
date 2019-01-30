@@ -2,11 +2,14 @@ module Rpc (handle) where
 
 import Network.JsonRpc.Server
 import qualified Data.ByteString.Lazy.Char8 as B
-import Data.Maybe (fromMaybe)
-import Control.Monad.Trans (liftIO)
-import qualified User
 import qualified Data.Aeson as Aeson
-import qualified Persistence.Database
+import qualified Persistence.Database as Database
+import qualified Domain.User as User (new)
+import Serializers.User (UserView, toView)
+
+import Control.Monad.IO.Class (liftIO)
+import Data.Maybe (fromMaybe)
+import Persistence.Schema (Entity, User)
 
 type Server = IO
 
@@ -24,14 +27,11 @@ create :: Method Server
 create = toMethod "create" f params
   where
     params = Required "name" :+: Required "email" :+: ()
-    f :: String -> String -> RpcResult Server String
-    f name email = liftIO $ Database.insert $ User.new name email
+    f :: String -> String -> RpcResult Server UserView
+    f name email = liftIO $ toView <$> Database.insert (User.new name email)
 
 index :: Method Server
 index = toMethod "index" f ()
   where
-    f :: RpcResult Server String
-    f = liftIO $ (Database.all :: [Schema.Entity User.User]) >>= encode
-      where
-        encode users = return $ Aeson.encode users
-
+    f :: RpcResult Server [UserView]
+    f = liftIO $ map toView <$> (Database.list :: IO [Entity User])

@@ -1,20 +1,24 @@
-{-# LANGUAGE GADTs #-}
+module Persistence.Database (exec, list, insert) where
 
-module Persistence.Database (exec, insert, all) where
-
-import Database.Persist.Postgresql as P (ConnectionString, SqlPersistT, IsSqlBackend)
-import Database.Persist.Postgresql as P (withPostgresqlConn)
-import Database.Persist.Sql as Sql (insert, selectList)
-import Control.Monad.Reader (runReaderT, ReaderT, MonadIO)
-import Control.Monad.Logger (runStdoutLoggingT, MonadLogger)
+import Database.Persist.Postgresql (ConnectionString, SqlPersistT, SqlBackend)
+import Database.Persist.Postgresql (withPostgresqlConn)
+import Database.Persist.Class (insertEntity, selectList, PersistEntityBackend, PersistEntity)
+import Control.Monad.IO.Unlift (MonadUnliftIO)
+import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.Logger (MonadLogger, LoggingT, runStdoutLoggingT)
+import Control.Monad.Reader (runReaderT)
 import Persistence.Schema (Entity)
 
-all :: (MonadIO m, MonadLogger m) => SqlPersistT m [Entity r]
-all = exec $ Sql.selectList [] []
+list :: (MonadUnliftIO m, PersistEntity r, PersistEntityBackend r ~ SqlBackend) =>
+  m [Entity r]
+list = exec $ selectList [] []
 
-insert record = exec $ Sql.insert record
+insert :: (MonadUnliftIO m, PersistEntity r, PersistEntityBackend r ~ SqlBackend) =>
+  r -> m (Entity r)
+insert record = exec $ insertEntity record
 
-exec action = runStdoutLoggingT $ P.withPostgresqlConn connString runAction
+exec :: (MonadUnliftIO m) => SqlPersistT (LoggingT m) a -> m a
+exec action = runStdoutLoggingT $ withPostgresqlConn connString runAction
   where
     runAction backend = runReaderT action backend
 
