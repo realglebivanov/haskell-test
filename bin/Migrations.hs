@@ -1,7 +1,7 @@
 module Migrations (main) where
 
 import Database.Persist.Postgresql (runMigration)
-import Persistence.Database (exec)
+import Persistence.Repository (exec)
 import Persistence.Schema (migrateAll)
 
 main :: IO ()

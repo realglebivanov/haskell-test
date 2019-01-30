@@ -1,4 +1,4 @@
-module Persistence.Database (exec, list, insert) where
+module Persistence.Repository (exec, list, insert) where
 
 import Database.Persist.Postgresql (ConnectionString, SqlPersistT, SqlBackend)
 import Database.Persist.Postgresql (withPostgresqlConn)

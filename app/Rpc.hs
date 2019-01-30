@@ -3,7 +3,7 @@ module Rpc (handle) where
 import Network.JsonRpc.Server
 import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Data.Aeson as Aeson
-import qualified Persistence.Database as Database
+import qualified Persistence.Repository as Repository
 import qualified Domain.User as User (new)
 import Serializers.User (UserView, toView)
 
@@ -28,10 +28,10 @@ create = toMethod "create" f params
   where
     params = Required "name" :+: Required "email" :+: ()
     f :: String -> String -> RpcResult Server UserView
-    f name email = liftIO $ toView <$> Database.insert (User.new name email)
+    f name email = liftIO $ toView <$> Repository.insert (User.new name email)
 
 index :: Method Server
 index = toMethod "index" f ()
   where
     f :: RpcResult Server [UserView]
-    f = liftIO $ map toView <$> (Database.list :: IO [Entity User])
+    f = liftIO $ map toView <$> (Repository.list :: IO [Entity User])
