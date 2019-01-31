@@ -17,9 +17,11 @@ dependencies:
 - persistent
 - persistent-postgresql
 - persistent-template
+- postgresql-simple
 - monad-logger
 - unliftio-core
 - transformers
+- envy
 
 library:
   source-dirs: [lib]
