@@ -1,6 +1,6 @@
 module HaskellTest.Persistence.Repository (exec, list, insert) where
 
-import Database.Persist.Postgresql (ConnectionString, SqlPersistT, SqlBackend)
+import Database.Persist.Postgresql (SqlPersistT, SqlBackend)
 import Database.Persist.Postgresql (withPostgresqlConn)
 import Database.Persist.Class (insertEntity, selectList, PersistEntityBackend, PersistEntity)
 import Control.Monad.IO.Unlift (MonadUnliftIO)

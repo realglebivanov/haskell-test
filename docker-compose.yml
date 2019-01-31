@@ -8,14 +8,14 @@ services:
   app:
     dns: 8.8.8.8
     build: .
-    command: stack exec main
+    command: sh -c "stack exec migrations && stack exec main"
     working_dir: /app
     environment:
       PG_HOST: postgres
       PG_PORT: 5432
       PG_USER: postgres
       PG_PASSWORD: postgres
-      PG_DATABASE: haskell_test
+      PG_DATABASE: postgres
     depends_on:
       - postgres
     networks:
@@ -24,7 +24,6 @@ services:
       - "3000:3000"
   postgres:
     image: postgres
-    command: createdb haskell_test -U postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
